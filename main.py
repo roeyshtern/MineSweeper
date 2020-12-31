@@ -91,18 +91,6 @@ class Box():
         
         return -1
         
-        
-
-def mouse_coord():
-    print('Press Ctrl-C to quit.')
-    try:
-        while True:
-            x, y = pyautogui.position()
-            positionStr = 'X: ' + str(x).rjust(4) + ' Y: ' + str(y).rjust(4)
-            print(positionStr, end='')
-            print('\b' * len(positionStr), end='', flush=True)
-    except KeyboardInterrupt:
-        print('\n')
 
 class ImageCreator():
     def __init__(self, image, board_loc):
@@ -124,17 +112,32 @@ class ImageCreator():
         print("r= {0}, g={1}, b={2}".format(r,g,b))
         return (r,g,b)
 
+def auto_loc_picture(path):
+    return pyautogui.locateOnScreen(path)
+
 def auto_loc_board():
-    return pyautogui.locateOnScreen('board.png')
+    return auto_loc_picture('board_tiny.png')
+
+def mouse_coord():
+    print('Press Ctrl-C to quit.')
+    try:
+        while True:
+            x, y = pyautogui.position()
+            positionStr = 'X: ' + str(x).rjust(4) + ' Y: ' + str(y).rjust(4)
+            print(positionStr, end='')
+            print('\b' * len(positionStr), end='', flush=True)
+    except KeyboardInterrupt:
+        print('\n')
 
 def main():
     #pyautogui.screenshot('test.png')
     #pyautogui.screenshot('screenshot.png', region=board)
     #print(board)
     #pyautogui.click(x=board.left, y=board.top)
-    
-    #board_loc = auto_loc_board()
-    board_loc = pyautogui.pyscreeze.Box(left=642, top=320, width=300, height=300)
+    #mouse_coord()
+    board_loc = auto_loc_board()
+    board_loc = pyautogui.pyscreeze.Box(left=board_loc.left, top=board_loc.top, width = NUMBER_OF_HOR_FIELDS*30, height = NUMBER_OF_VER_FIELDS*30)
+    #board_loc = pyautogui.pyscreeze.Box(left=642, top=320, width=300, height=300)
     #pyautogui.screenshot('first_screenshot.png', region=board_loc)
     im = Image.open('first_screenshot.png')
     image_c = ImageCreator(im, board_loc)
